@@ -43,7 +43,7 @@ parseAtom = do
                          _    -> Atom atom
 
 parseNumber :: Parser LispVal
-parseNumber = liftM (Number . read) $ many1 digit
+parseNumber = fmap (Number . read) $ many1 digit
 
 {-readExpr :: String -> String
 readExpr input = case parse parseExpr "lisp" input of
@@ -56,7 +56,7 @@ readExpr input = case parse parseExpr "lisp" input of
     Right val -> val
 
 parseList :: Parser LispVal
-parseList = liftM List $ sepBy parseExpr spaces
+parseList = fmap List $ sepBy parseExpr spaces
 
 parseDottedList :: Parser LispVal
 parseDottedList = do
@@ -119,7 +119,7 @@ unpackNum (Number n) = n
 unpackNum (Str n)    = let parsed = reads n :: [(Integer, String)] in 
                            if null parsed 
                               then 0
-                              else fst $ parsed !! 0
+                              else fst $ head parsed 
 unpackNum (List [n]) = unpackNum n
 unpackNum _ = 0
 
