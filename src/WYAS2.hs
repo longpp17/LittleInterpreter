@@ -3,6 +3,13 @@ import Text.ParserCombinators.Parsec hiding (spaces)
 import System.Environment
 import Control.Monad
 import Control.Monad.Except
+{-|
+
+Adapted from the wikibook https://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours
+
+Corresponds to the progress made by the end of Chapter 5, Evaluation Part 2.
+
+-}
 
 data LispVal = Atom   String
              | List   [LispVal]

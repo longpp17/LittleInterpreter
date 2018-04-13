@@ -5,6 +5,14 @@ import Control.Monad
 import Control.Monad.Except
 import System.IO
 import Data.IORef
+{-|
+
+Adapted from the wikibook https://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours
+
+Corresponds to the progress made by the end of Chapter 10, Towards a Standard Library.
+
+-}
+
 
 {-
 Corresponds to Chapter 9: Creating IO Primitives, and 10: Standard Lib.

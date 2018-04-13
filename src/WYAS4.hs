@@ -5,10 +5,14 @@ import Control.Monad
 import Control.Monad.Except
 import System.IO
 import Data.IORef
+{-|
 
-{-
-Corresponds to Chapter 7: Adding variables and assignment.
+Adapted from the wikibook https://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours
+
+Corresponds to the progress made by the end of Chapter 7, Adding Variables and Assignment.
+
 -}
+
 type Env = IORef [(String, IORef LispVal)]
 
 type IOThrowsError = ExceptT LispError IO

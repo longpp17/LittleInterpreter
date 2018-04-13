@@ -5,10 +5,14 @@ import Control.Monad
 import Control.Monad.Except
 import System.IO
 import Data.IORef
+{-|
 
-{-
-Corresponds to Chapter 8: Defining Scheme functions.
+Adapted from the wikibook https://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours
+
+Corresponds to the progress made by the end of Chapter 8, Defining Scheme Functions.
+
 -}
+
 type Env = IORef [(String, IORef LispVal)]
 
 type IOThrowsError = ExceptT LispError IO

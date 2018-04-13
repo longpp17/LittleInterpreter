@@ -1,7 +1,13 @@
 import Text.ParserCombinators.Parsec hiding (spaces)
 import System.Environment
 import Control.Monad
+{-|
 
+Adapted from the wikibook https://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours
+
+Corresponds to the progress made by the end of Chapter 3, Evaluation Part 1.
+
+-}
 data LispVal = Atom   String
              | List   [LispVal]
              | DottedList [LispVal] LispVal

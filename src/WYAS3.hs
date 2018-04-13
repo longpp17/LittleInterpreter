@@ -4,6 +4,13 @@ import System.Environment
 import Control.Monad
 import Control.Monad.Except
 import System.IO
+{-|
+
+Adapted from the wikibook https://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours
+
+Corresponds to the progress made by the end of Chapter 6, Building a REPL.
+
+-}
 
 data LispVal = Atom   String
              | List   [LispVal]

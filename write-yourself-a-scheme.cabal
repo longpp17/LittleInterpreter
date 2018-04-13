@@ -20,6 +20,38 @@ executable write-yourself-a-scheme
   main-is:             Main.hs
   -- other-modules:       
   other-extensions:    ExistentialQuantification
-  build-depends:       base >=4.9 && <4.10, parsec >=3.1 && <3.2, mtl >=2.2 && <2.3
+  build-depends:       base
+                     , parsec
+                     , mtl
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+
+executable week1
+  main-is:             WYAS0.hs
+  -- other-modules:       
+  other-extensions:    ExistentialQuantification
+  build-depends:       base
+                     , parsec
+                     , mtl
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+
+executable week2
+  main-is:             WYAS3.hs
+  -- other-modules:       
+  other-extensions:    ExistentialQuantification
+  build-depends:       base
+                     , parsec
+                     , mtl
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+
+executable week3
+  main-is:             WYAS6.hs
+  -- other-modules:       
+  other-extensions:    ExistentialQuantification
+  build-depends:       base
+                     , parsec
+                     , mtl
   hs-source-dirs:      src
   default-language:    Haskell2010
