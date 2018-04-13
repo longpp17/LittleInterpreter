@@ -1,4 +1,4 @@
-# Write Yourself a Schemeh
+# Write Yourself a Scheme
 
 An adaptation of the wikibook tutorial (https://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours), 
 made for teaching purposes at the University of Brighton.
