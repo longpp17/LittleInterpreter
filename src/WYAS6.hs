@@ -5,6 +5,7 @@ import Control.Monad
 import Control.Monad.Except
 import System.IO
 import Data.IORef
+import System.Console.Haskeline
 {-|
 
 Adapted from the wikibook https://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours
@@ -115,15 +116,6 @@ parseAtom = do
 parseNumber :: Parser LispVal
 parseNumber = liftM (Number . read) $ many1 digit
 
-{-readExpr :: String -> String
-readExpr input = case parse parseExpr "lisp" input of
-    Left err  -> "No match: " ++ show err
-    Right val -> "Found value: `" ++ (show val) ++"'"
-
-readExpr :: String -> LispVal
-readExpr input = case parse parseExpr "lisp" input of
-    Left err  -> Str $ "No match: " ++ show err
-    Right val -> val-}
 readOrThrow :: Parser a -> String -> ThrowsError a
 readOrThrow parser input = case parse parser "lisp" input of
     Left err  -> throwError $ Parser err
@@ -384,35 +376,8 @@ equal [arg1, arg2] = do
       return $ Bool $ (primitiveEquals || let (Bool x) = eqvEquals in x)
 equal badArgList = throwError $ NumArgs 2 badArgList
 
-
-
-flushStr :: String -> IO ()
-flushStr str = putStr str >> hFlush stdout
-
-readPrompt :: String -> IO String
-readPrompt prompt = flushStr prompt >> getLine
-
-evalAndPrint :: Env -> String -> IO ()
-evalAndPrint env expr =  evalString env expr >>= putStrLn
-
 evalString :: Env -> String -> IO String
 evalString env expr = runIOThrows $ liftM show $ (liftThrows $ readExpr expr) >>= eval env
-
-until_ :: Monad m => (a -> Bool) -> m a -> (a -> m ()) -> m ()
-until_ pred prompt action = do 
-   result <- prompt
-   if pred result 
-      then return ()
-      else action result >> until_ pred prompt action
-
-runOne :: [String] -> IO ()
-runOne args = do
-    env <- primitiveBindings >>= flip bindVars [("args", List $ map Str $ drop 1 args)] 
-    (runIOThrows $ liftM show $ eval env (List [Atom "load", Str (args !! 0)])) 
-        >>= hPutStrLn stderr
-
-runRepl :: IO ()
-runRepl = primitiveBindings >>= until_ (== "quit") (readPrompt "Lisp>>> ") . evalAndPrint
 
 nullEnv :: IO Env
 nullEnv = newIORef []
@@ -460,6 +425,47 @@ bindVars envRef bindings = readIORef envRef >>= extendEnv bindings >>= newIORef
 makeFunc varargs env params body = return $ Func (map renderVal params) varargs body env
 makeNormalFunc = makeFunc Nothing
 makeVarArgs = makeFunc . Just . renderVal
+
+evalAndPrint :: Env -> String -> IO ()
+evalAndPrint env expr =  evalString env expr >>= putStrLn
+
+flushStr :: String -> IO ()
+flushStr str = putStr str >> hFlush stdout
+
+readPrompt :: String -> IO String
+readPrompt prompt = flushStr prompt >> getLine
+
+until_ :: Monad m => (a -> Bool) -> m a -> (a -> m ()) -> m ()
+until_ pred prompt action = do 
+   result <- prompt
+   if pred result 
+      then return ()
+      else action result >> until_ pred prompt action
+
+runOne :: [String] -> IO ()
+runOne args = do
+    env <- primitiveBindings >>= flip bindVars [("args", List $ map Str $ drop 1 args)] 
+    (runIOThrows $ liftM show $ eval env (List [Atom "load", Str (args !! 0)])) 
+        >>= hPutStrLn stderr
+
+runRepl :: IO ()
+runRepl = primitiveBindings >>= until_ (== "quit") (readPrompt "Lisp>>> ") . evalAndPrint
+
+{-
+replPrompt :: IO ()
+replPrompt = primitiveBindings >>= runInputT defaultSettings loop
+   where
+       loop :: InputT IO ()
+       loop = do
+           minput <- getInputLine "Lisp>>> "
+           case minput of
+               Nothing     -> return ()
+               Just "quit" -> return ()
+               Just input  -> if null input
+                              then loop
+                              else do (liftIO $ evalString input) >>= outputStrLn
+                                      loop
+-}
 
 main :: IO ()
 main = do args <- getArgs

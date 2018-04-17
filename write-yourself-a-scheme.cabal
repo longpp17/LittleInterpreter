@@ -19,6 +19,7 @@ executable week1
                      , parsec
                      , mtl
   hs-source-dirs:      src
+  --ghc-options:         -Wall
   default-language:    Haskell2010
 
 executable week2
@@ -28,7 +29,9 @@ executable week2
   build-depends:       base
                      , parsec
                      , mtl
+                     , haskeline
   hs-source-dirs:      src
+  --ghc-options:         -Wall
   default-language:    Haskell2010
 
 executable week3
@@ -38,5 +41,7 @@ executable week3
   build-depends:       base
                      , parsec
                      , mtl
+                     , haskeline
   hs-source-dirs:      src
+  --ghc-options:         -Wall
   default-language:    Haskell2010
