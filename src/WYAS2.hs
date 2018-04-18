@@ -12,14 +12,6 @@ Adapted from the wikibook https://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_
 
 Corresponds to the progress made by the end of Chapter 10, Towards a Standard Library.
 
--}
-
-
-{-
-Corresponds to Chapter 9: Creating IO Primitives, and 10: Standard Lib.
-
-$ ghc -package parsec -fglasgow-exts -o lisp [../code/listing9.hs listing9.hs]
-$ ./lisp
 Lisp>>> (define (f x y) (+ x y))
 (lambda ("x" "y") ...)
 Lisp>>> (f 1 2)
