@@ -23,7 +23,7 @@ executable week1
   default-language:    Haskell2010
 
 executable week2
-  main-is:             WYAS3.hs
+  main-is:             WYAS1.hs
   -- other-modules:       
   other-extensions:    ExistentialQuantification
   build-depends:       base
@@ -35,7 +35,7 @@ executable week2
   default-language:    Haskell2010
 
 executable week3
-  main-is:             WYAS6.hs
+  main-is:             WYAS2.hs
   -- other-modules:       
   other-extensions:    ExistentialQuantification
   build-depends:       base
