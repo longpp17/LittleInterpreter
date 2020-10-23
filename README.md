@@ -19,14 +19,62 @@ $ cabal install
 ```
 
 Start by reading the code in the module `src/WYAS0.hs`. There are
-three executable cabal targets, `week1`, `week2` and `week3`.
+three executable cabal targets, `week1`, `week2` and `week3`. The version 
+of the program in `week1` can read an expression from the command line
+and understands some basic arithmetic:
+
 
 ```
-$ cabal run week1 -- '(> 1 2)'
+$ cabal run week1 -- '(mod 12 7)'
 Preprocessing executable 'week1' for write-yourself-a-scheme-0.1.0.0..
 Building executable 'week1' for write-yourself-a-scheme-0.1.0.0..
 Running week1...
+5
+```
+The version 
+of the program in `week2` starts a REPL. It knows logical operators, functions for manipulating lists,
+comparing numbers and strings:
+
+```
+$ cabal run week2
+Up to date
+Lisp>>> (cons 0 (car (cdr '(1 2 3))))
+(0 . 2)
+Lisp>>> (|| (/= 1 1) (> 2 1))
+#t
+Lisp>>> (string>? "hi" "how are you")
 #f
+
+```
+
+The version 
+of the program in `week3` allows the user to define functions. It can also load and evaluate 
+files containing Scheme programs:
+
+```
+$ cabal run week3 etc/fac.scm
+Up to date
+120
+$ cabal run week3
+Lisp>>> (define (f x y) (+ x y))
+(lambda ("x" "y") ...)
+Lisp>>> (f 1 2)
+3
+Lisp>>> (f 1 2 3)
+Expected 2 args; found values 1 2 3
+Lisp>>> (define (factorial x) (if (= x 1) 1 (* x (factorial (- x 1)))))
+(lambda ("x") ...)
+Lisp>>> (factorial 10)
+3628800
+Lisp>>> (define (counter inc) (lambda (x) (set! inc (+ x inc)) inc))
+(lambda ("inc") ...)
+Lisp>>> (define my-count (counter 5))
+(lambda ("x") ...)
+Lisp>>> (my-count 3)
+8
+Lisp>>> (my-count 6)
+14
+
 ```
 
 The exercises below are a selection of those that appear at the end of
@@ -63,7 +111,7 @@ end of the chapter [Evaluation, Part
   
 ## Week 2
 
-After the second lecture we will have reached te end of the chapter
+After the second lecture we will have reached the end of the chapter
 [Building a
 REPL](https://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours/Building_a_REPL).
 
