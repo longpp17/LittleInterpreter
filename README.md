@@ -13,9 +13,6 @@ Clone the repository and build it:
 ```
 $ git clone https://github.com/jimburton/write-yourself-a-scheme
 $ cd write-yourself-a-scheme
-$ cabal update
-$ cabal configure
-$ cabal install
 ```
 
 Start by reading the code in the module `src/WYAS0.hs`. There are
@@ -25,15 +22,16 @@ and understands some basic arithmetic:
 
 
 ```
-$ cabal run week1 -- '(mod 12 7)'
+$ cabal run week1 '(mod 12 7)'
 Preprocessing executable 'week1' for write-yourself-a-scheme-0.1.0.0..
 Building executable 'week1' for write-yourself-a-scheme-0.1.0.0..
 Running week1...
 5
 ```
-The version 
-of the program in `week2` starts a REPL. It knows logical operators, functions for manipulating lists,
-comparing numbers and strings:
+
+The version of the program in `week2` starts a REPL. It knows logical
+operators, functions for manipulating lists, comparing numbers and
+strings:
 
 ```
 $ cabal run week2
@@ -47,9 +45,9 @@ Lisp>>> (string>? "hi" "how are you")
 
 ```
 
-The version 
-of the program in `week3` allows the user to define functions. It can also load and evaluate 
-files containing Scheme programs:
+The version of the program in `week3` allows the user to define
+functions. It can also load and evaluate files containing Scheme
+programs:
 
 ```
 $ cabal run week3 etc/fac.scm
@@ -93,12 +91,8 @@ end of the chapter [Evaluation, Part
 
 + Add support for
   [vectors](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-9.html#%_sec_6.3.6). The
-  Haskell representation is up to you: GHC does have an
-  [Array](http://hackage.haskell.org/package/array-0.5.0.0/docs/Data-Array.html)
-  data type, but it can be difficult to use. Strictly speaking, a
-  vector should have constant-time indexing and updating, but
-  destructive update in a purely functional language is difficult. For
-  now, you can use a list.
+  Haskell representation should use
+  [Vector](https://hackage.haskell.org/package/vector-0.12.3.1/docs/Data-Vector.html).
 
 + Add primitives to perform the various
   [type-testing](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-9.html#%_sec_6.3)
