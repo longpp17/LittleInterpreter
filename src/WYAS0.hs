@@ -12,6 +12,7 @@ import Control.Monad.Except
 import System.IO
 import GHC.TopHandler (runIO)
 import System.Console.Haskeline
+import GHC.ExecutionStack (Location(functionName))
 
 
 {-|
@@ -39,6 +40,7 @@ data LispVal = Atom   String
 data LispError = NumArgs Integer [LispVal]
                | TypeMismatch String LispVal
                | Parser ParseError
+               | NotImplemented String
                | BadSpecialForm String LispVal
                | NotFunction String String
                | UnboundVar String String
@@ -220,6 +222,7 @@ eval env val@(Str _)    = return val
 eval env val@(Number _) = return val
 eval env val@(Bool _)   = return val
 eval env (Atom id) = getVar env id
+
 eval env (List [Atom "quote", val]) = return val
 eval env (List [Atom "if", pred, conseq, alt]) =
     do result <- eval env pred
@@ -243,6 +246,20 @@ eval env (List (Atom "define" : List (Atom var : params) : body)) =
      makeNormalFunc env params body >>= defineVar env var
 eval env (List (Atom "define" : DottedList (Atom var : params) varargs : body)) =
      makeVarArgs varargs env params body >>= defineVar env var
+eval env (List (Atom "let" : List bindings : body)) = do
+     newEnv <- liftIO $ bindVars env _bindings
+     eval newEnv $ head body
+    where _bindings = zip names values
+          names = map (\(List [Atom name, _]) -> name) bindings
+          values = map (\(List [_, val]) -> val) bindings
+eval env (List (Atom "let" : DottedList bindings varargs : body)) = do
+     newEnv <- liftIO $ bindVars env _bindings
+     eval newEnv $ List body
+    where _bindings = zip names values
+          names = map (\(List [Atom name, _]) -> name) bindings
+          values = map (\(List [_, val]) -> val) bindings
+eval env (List (Atom "let" : args)) = throwError $ NumArgs 2 args
+
 eval env (List (Atom "lambda" : List params : body)) =
      makeNormalFunc env params body
 eval env (List (Atom "lambda" : DottedList params varargs : body)) =
@@ -254,7 +271,6 @@ eval env (List (function : args)) = do
      func <- eval env function
      argVals <- mapM (eval env) args
      apply func argVals
-
 eval env badForm = throwError $ BadSpecialForm "Unrecognized special form" badForm
 
 -- TODO: define a composition function syntax that just like . in haskell
@@ -329,6 +345,8 @@ apply (Func params varargs body closure) args =
             bindVarArgs arg env = case arg of
                 Just argName -> liftIO $ bindVars env [(argName, List $ remainingArgs)]
                 Nothing -> return env
+apply _ _ = error "apply error"
+
 
 primitiveBindings :: IO Env
 primitiveBindings = nullEnv >>= (flip bindVars $ map makePrimitiveFunc primitives)
